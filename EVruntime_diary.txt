@@ -1,0 +1,65 @@
+=== EVruntime.m run 04-Sep-2026 07:44:58 ===
+GPU: NVIDIA RTX 4000 Ada Generation, total memory 21.0 GB, available 20.8 GB
+
+--- n_a=101, n_z=9 (EV broadcast transient 0.07 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 6.352e-16 (tol 1e-12, summation-order only), Policy identical = 1
+total: OLD 0.3536s, NEW 0.3583s (0.99x); EV block: OLD 0.0048s, NEW 0.0083s (0.58x)
+
+--- n_a=101, n_z=21 (EV broadcast transient 0.40 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 7.973e-16 (tol 1e-12, summation-order only), Policy identical = 1
+total: OLD 0.3588s, NEW 0.3630s (0.99x); EV block: OLD 0.0048s, NEW 0.0081s (0.59x)
+
+--- n_a=101, n_z=51 (EV broadcast transient 2.36 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 7.733e-16 (tol 1e-12, summation-order only), Policy identical = 1
+total: OLD 0.3800s, NEW 0.3843s (0.99x); EV block: OLD 0.0053s, NEW 0.0085s (0.62x)
+
+--- n_a=201, n_z=9 (EV broadcast transient 0.15 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 6.540e-16 (tol 1e-12, summation-order only), Policy identical = 1
+total: OLD 0.4840s, NEW 0.4881s (0.99x); EV block: OLD 0.0049s, NEW 0.0082s (0.60x)
+
+--- n_a=201, n_z=21 (EV broadcast transient 0.80 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 7.256e-16 (tol 1e-12, summation-order only), Policy identical = 0
+FAIL: NEWEV does not match OLDEV at n_a=201,n_z=21
+total: OLD 0.5051s, NEW 0.5089s (0.99x); EV block: OLD 0.0051s, NEW 0.0081s (0.63x)
+
+--- n_a=201, n_z=51 (EV broadcast transient 4.71 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 7.950e-16 (tol 1e-12, summation-order only), Policy identical = 1
+total: OLD 0.5577s, NEW 0.5618s (0.99x); EV block: OLD 0.0063s, NEW 0.0092s (0.68x)
+
+--- n_a=501, n_z=9 (EV broadcast transient 0.37 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 7.540e-16 (tol 1e-12, summation-order only), Policy identical = 1
+total: OLD 0.7533s, NEW 0.7573s (0.99x); EV block: OLD 0.0053s, NEW 0.0082s (0.64x)
+
+--- n_a=501, n_z=21 (EV broadcast transient 1.99 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 7.238e-16 (tol 1e-12, summation-order only), Policy identical = 1
+total: OLD 0.8440s, NEW 0.8537s (0.99x); EV block: OLD 0.0059s, NEW 0.0095s (0.62x)
+
+--- n_a=501, n_z=51 (EV broadcast transient 11.73 MB) ---
+OLDEV vs toolkit: max |V diff| = 0.000e+00 (expect exactly 0), Policy identical = 1
+NEWEV vs OLDEV: max rel |V diff| = 8.644e-16 (tol 1e-12, summation-order only), Policy identical = 0
+FAIL: NEWEV does not match OLDEV at n_a=501,n_z=51
+total: OLD 0.9751s, NEW 0.9752s (1.00x); EV block: OLD 0.0088s, NEW 0.0103s (0.86x)
+
+--- Runtime comparison table (means over 5 reps, 80 backward steps per solve) ---
+totals from clean runs (timeEV=0); EV-only from instrumented runs (timeEV=1, adds per-age syncs)
+  n_a   n_z |  totOLD(s)  totNEW(s)  OLD/NEW |   EVold(s)   EVnew(s)  OLD/NEW |   EVshOLD   EVshNEW
+  101     9 |     0.3536     0.3583    0.99x |     0.0048     0.0083    0.58x |      1.4%      2.3%
+  101    21 |     0.3588     0.3630    0.99x |     0.0048     0.0081    0.59x |      1.3%      2.2%
+  101    51 |     0.3800     0.3843    0.99x |     0.0053     0.0085    0.62x |      1.4%      2.2%
+  201     9 |     0.4840     0.4881    0.99x |     0.0049     0.0082    0.60x |      1.0%      1.7%
+  201    21 |     0.5051     0.5089    0.99x |     0.0051     0.0081    0.63x |      1.0%      1.6%
+  201    51 |     0.5577     0.5618    0.99x |     0.0063     0.0092    0.68x |      1.1%      1.6%
+  501     9 |     0.7533     0.7573    0.99x |     0.0053     0.0082    0.64x |      0.7%      1.1%
+  501    21 |     0.8440     0.8537    0.99x |     0.0059     0.0095    0.62x |      0.7%      1.1%
+  501    51 |     0.9751     0.9752    1.00x |     0.0088     0.0103    0.86x |      0.9%      1.1%
+(EV share columns are the EV block as a % of the instrumented run at the same setting)
+
+=== EVruntime summary: 16 passed, 2 failed ===

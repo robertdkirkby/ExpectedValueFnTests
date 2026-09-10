@@ -1,0 +1,78 @@
+=== EVtest.m run 04-Sep-2026 09:28:58 ===
+GPU: NVIDIA RTX 4000 Ada Generation, total memory 21.0 GB, available 20.8 GB
+
+--- Test 1: correctness, all-finite rand() inputs ---
+N_z= 525: max rel diff broadcast vs matmul = 3.331e-16 (tol 1e-12)
+N_z=1000: max rel diff broadcast vs matmul = 3.331e-16 (tol 1e-12)
+N_z=3965: broadcast ERRORED as projected (70.9 GB transient): parallel:gpu:array:pmaxsize
+         matmul at the same size succeeded (valid [501,1,3965] output, no NaN): 1
+
+--- Test 2: correctness with -Inf in V and structural zeros in pi_z ---
+N_z= 525: finite EV entries 121601, -Inf EV entries 141424, (-Inf x zero-prob) cases 4274242
+         finite: max rel diff = 2.776e-16 (tol 1e-12); -Inf pattern identical = 1; -Inf exactly -Inf = 1; any NaN = 0
+N_z=1000: finite EV entries 237270, -Inf EV entries 263730, (-Inf x zero-prob) cases 14763449
+         finite: max rel diff = 3.331e-16 (tol 1e-12); -Inf pattern identical = 1; -Inf exactly -Inf = 1; any NaN = 0
+
+--- Test 3: runtimes (mean over 5 reps, after warmup) and memory ---
+     N_z  broadcast (s)     matmul (s)    broadcast mem       matmul mem
+     525         0.0081         0.0017          1.24 GB        0.0085 GB
+    1000         0.0872         0.0061          4.51 GB        0.0200 GB
+    1500         0.3431         0.0123         10.15 GB        0.0360 GB
+    2000            OOM         0.0218         18.04 GB        0.0560 GB   (broadcast OOM: parallel:gpu:array:OOM)
+    3965            OOM         0.0849         70.89 GB        0.1734 GB   (broadcast OOM: parallel:gpu:array:pmaxsize)
+
+--- Test 4: crossover sweep (per-call EV block, mean over 5 reps after warmup) ---
+
+N_a=101
+     N_z   broadcast (s)      matmul (s)    bro/mat       elements      bro mem
+       9         0.00014         0.00021      0.65x           8181      0.00 GB
+      21         0.00004         0.00007      0.59x          44541      0.00 GB
+      41         0.00004         0.00007      0.61x         169781      0.00 GB
+      61         0.00004         0.00007      0.60x         375821      0.00 GB
+      81         0.00006         0.00009      0.66x         662661      0.01 GB
+     101         0.00005         0.00008      0.58x        1030301      0.01 GB
+     151         0.00009         0.00010      0.82x        2302901      0.02 GB
+     251         0.00029         0.00016      1.89x        6363101      0.06 GB
+     401         0.00106         0.00031      3.42x       16240901      0.15 GB
+     525         0.00175         0.00057      3.10x       27838125      0.25 GB
+    1000         0.00608         0.00141      4.33x      101000000      0.91 GB
+N_a=101: crossover between N_z=151 and N_z=251; estimated at 2.94e+06 elements (N_z~170 at this N_a)
+
+N_a=201
+     N_z   broadcast (s)      matmul (s)    bro/mat       elements      bro mem
+       9         0.00003         0.00006      0.55x          16281      0.00 GB
+      21         0.00003         0.00006      0.59x          88641      0.00 GB
+      41         0.00004         0.00006      0.57x         337881      0.00 GB
+      61         0.00004         0.00006      0.60x         747921      0.01 GB
+      81         0.00005         0.00007      0.73x        1318761      0.01 GB
+     101         0.00008         0.00008      0.98x        2050401      0.02 GB
+     151         0.00016         0.00011      1.54x        4583001      0.04 GB
+     251         0.00080         0.00029      2.82x       12663201      0.11 GB
+     401         0.00198         0.00043      4.63x       32321001      0.29 GB
+     525         0.00333         0.00110      3.04x       55400625      0.50 GB
+    1000         0.02380         0.00308      7.72x      201000000      1.81 GB
+N_a=201: crossover between N_z=101 and N_z=151; estimated at 2.12e+06 elements (N_z~103 at this N_a)
+
+N_a=501
+     N_z   broadcast (s)      matmul (s)    bro/mat       elements      bro mem
+       9         0.00003         0.00006      0.55x          40581      0.00 GB
+      21         0.00003         0.00006      0.54x         220941      0.00 GB
+      41         0.00004         0.00006      0.61x         842181      0.01 GB
+      61         0.00007         0.00006      1.07x        1864221      0.02 GB
+      81         0.00011         0.00007      1.57x        3287061      0.03 GB
+     101         0.00019         0.00014      1.37x        5110701      0.05 GB
+     151         0.00073         0.00019      3.84x       11423301      0.10 GB
+     251         0.00192         0.00055      3.51x       31563501      0.28 GB
+     401         0.00906         0.00129      7.04x       80561301      0.73 GB
+     525         0.00981         0.00164      5.98x      138088125      1.24 GB
+    1000         0.15968         0.00610     26.16x      501000000      4.51 GB
+N_a=501: crossover between N_z=41 and N_z=61; estimated at 1.69e+06 elements (N_z~58 at this N_a)
+
+crossover summary (a toolkit size guard would test N_a*N_z^2 elements):
+  N_a= 101: ~2.94e+06 elements (0.026 GB broadcast transient), i.e. N_z~170 at this N_a
+  N_a= 201: ~2.12e+06 elements (0.019 GB broadcast transient), i.e. N_z~103 at this N_a
+  N_a= 501: ~1.69e+06 elements (0.015 GB broadcast transient), i.e. N_z~58 at this N_a
+  spread across N_a: 1.74x (close to 1 means the crossover is a transient-size threshold and transfers across grids)
+sweep spot-check: 33 points compared (33 with finite EV entries, 33 with -Inf EV entries), max rel diff 1.998e-15, -Inf patterns identical
+
+=== EVtest summary: 6 passed, 0 failed ===

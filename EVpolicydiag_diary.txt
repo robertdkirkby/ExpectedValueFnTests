@@ -1,0 +1,22 @@
+=== EVpolicydiag.m run 04-Sep-2026 11:02:24 ===
+GPU: NVIDIA RTX 4000 Ada Generation
+
+  n_a   n_z |  Pol diffs     frac |  |dfine|=1  |dfine|=2  |dfine|>2 | max relV@dif | -Inf in V
+  101     9 |          0 0.0e+00 |          -          -          - |           - |         0
+  101    21 |          0 0.0e+00 |          -          -          - |           - |         0
+  101    51 |          0 0.0e+00 |          -          -          - |           - |         0
+  201     9 |          0 0.0e+00 |          -          -          - |           - |         0
+  201    21 |          1 2.9e-06 |          1          0          0 |   2.015e-16 |         0
+        ages with flips: 9
+        largest fine-grid gap: 1 step(s) at (a=34,z=10,j=9); V_old=-17.6348692967583 V_new=-17.6348692967583
+  201    51 |          0 0.0e+00 |          -          -          - |           - |         0
+  501     9 |          0 0.0e+00 |          -          -          - |           - |         0
+  501    21 |          0 0.0e+00 |          -          -          - |           - |         0
+  501    51 |          1 4.8e-07 |          1          0          0 |   2.104e-16 |         0
+        ages with flips: 6
+        largest fine-grid gap: 1 step(s) at (a=72,z=42,j=6); V_old=-16.8875151688409 V_new=-16.8875151688409
+
+Reading: flips that are 1 fine-grid step apart with relV at machine epsilon are
+numerically tied optima (summation order decides the tie), not a defect. Flips many
+steps apart, or a visible relV, would indicate a real problem in the NEWEV pipeline.
+If "-Inf in V" is 0 everywhere, this model never exercises the clamp/restore path.
