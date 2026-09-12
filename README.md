@@ -1,7 +1,7 @@
 Essentially this is a repo containing a bunch of tests comparing whether to compute the expected value fn as
-V.*pi_z
+V .* pi_z
 OR
-V*pi_z
+V * pi_z
 (so .* or *)
 
 Takeaway was that .* was almost twice as fast for small models, but * was 10x or more faster for big models (say N_z>1000, depends on N_a as well).
